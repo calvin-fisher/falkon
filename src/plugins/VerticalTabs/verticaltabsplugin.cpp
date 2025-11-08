@@ -45,6 +45,7 @@ void VerticalTabsPlugin::init(InitState state, const QString &settingsPath)
     settings.beginGroup(QSL("VerticalTabs"));
     m_viewType = static_cast<ViewType>(settings.value(QSL("ViewType"), TabListView).toInt());
     m_replaceTabBar = settings.value(QSL("ReplaceTabBar"), false).toBool();
+    m_showByDefault = settings.value(QSL("ShowByDefault"), false).toBool();
     m_addChildBehavior = static_cast<AddChildBehavior>(settings.value(QSL("AddChildBehavior"), AppendChild).toInt());
     m_theme = settings.value(QSL("Theme"), QSL(":verticaltabs/data/themes/default.css")).toString();
     settings.endGroup();
@@ -140,6 +141,23 @@ void VerticalTabsPlugin::setReplaceTabBar(bool replace)
     settings.setValue(QSL("VerticalTabs/ReplaceTabBar"), m_replaceTabBar);
 }
 
+bool VerticalTabsPlugin::showByDefault() const
+{
+    return m_showByDefault;
+}
+
+void VerticalTabsPlugin::setShowByDefault(bool show)
+{
+    if (m_showByDefault == show) {
+        return;
+    }
+
+    m_showByDefault = show;
+
+    QSettings settings(m_settingsPath, QSettings::IniFormat);
+    settings.setValue(QSL("VerticalTabs/ShowByDefault"), m_showByDefault);
+}
+
 VerticalTabsPlugin::AddChildBehavior VerticalTabsPlugin::addChildBehavior() const
 {
     return m_addChildBehavior;
@@ -187,6 +205,10 @@ void VerticalTabsPlugin::mainWindowCreated(BrowserWindow *window)
 {
     Q_UNUSED(window)
     setTabBarVisible(!m_replaceTabBar);
+
+    if (m_showByDefault) {
+        window->sideBarManager()->showSideBar(QSL("VerticalTabs"), false);
+    }
 }
 
 void VerticalTabsPlugin::setTabBarVisible(bool visible)

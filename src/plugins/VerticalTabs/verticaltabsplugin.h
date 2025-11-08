@@ -50,6 +50,9 @@ public:
     bool replaceTabBar() const;
     void setReplaceTabBar(bool replace);
 
+    bool showByDefault() const;
+    void setShowByDefault(bool show);
+
     enum AddChildBehavior {
         AppendChild,
         PrependChild
@@ -78,6 +81,7 @@ private:
     VerticalTabsSchemeHandler *m_schemeHandler = nullptr;
     ViewType m_viewType = TabListView;
     bool m_replaceTabBar = false;
+    bool m_showByDefault = false;
     AddChildBehavior m_addChildBehavior = AppendChild;
     QString m_theme;
     QString m_styleSheet;
