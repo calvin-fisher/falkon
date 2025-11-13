@@ -67,6 +67,13 @@
       <item row="2" column="1">
        <widget class="QComboBox" name="theme"/>
       </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="QCheckBox" name="closeEntireTree">
+        <property name="text">
+         <string>Close entire tree when parent is closed</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>

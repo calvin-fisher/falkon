@@ -45,6 +45,7 @@ void VerticalTabsPlugin::init(InitState state, const QString &settingsPath)
     settings.beginGroup(QSL("VerticalTabs"));
     m_viewType = static_cast<ViewType>(settings.value(QSL("ViewType"), TabListView).toInt());
     m_replaceTabBar = settings.value(QSL("ReplaceTabBar"), false).toBool();
+    m_closeEntireTree = settings.value(QSL("CloseEntireTree"), false).toBool();
     m_showByDefault = settings.value(QSL("ShowByDefault"), false).toBool();
     m_addChildBehavior = static_cast<AddChildBehavior>(settings.value(QSL("AddChildBehavior"), AppendChild).toInt());
     m_theme = settings.value(QSL("Theme"), QSL(":verticaltabs/data/themes/default.css")).toString();
@@ -156,6 +157,23 @@ void VerticalTabsPlugin::setShowByDefault(bool show)
 
     QSettings settings(m_settingsPath, QSettings::IniFormat);
     settings.setValue(QSL("VerticalTabs/ShowByDefault"), m_showByDefault);
+}
+
+bool VerticalTabsPlugin::closeEntireTree() const
+{
+    return m_closeEntireTree;
+}
+
+void VerticalTabsPlugin::setCloseEntireTree(bool close)
+{
+    if (m_closeEntireTree == close) {
+        return;
+    }
+
+    m_closeEntireTree = close;
+
+    QSettings settings(m_settingsPath, QSettings::IniFormat);
+    settings.setValue(QSL("VerticalTabs/CloseEntireTree"), m_closeEntireTree);
 }
 
 VerticalTabsPlugin::AddChildBehavior VerticalTabsPlugin::addChildBehavior() const

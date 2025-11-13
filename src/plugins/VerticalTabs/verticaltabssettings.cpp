@@ -36,6 +36,7 @@ VerticalTabsSettings::VerticalTabsSettings(VerticalTabsPlugin *plugin, QWidget *
     ui->prependChild->setChecked(m_plugin->addChildBehavior() == VerticalTabsPlugin::PrependChild);
     ui->replaceTabBar->setChecked(m_plugin->replaceTabBar());
     ui->showByDefault->setChecked(m_plugin->showByDefault());
+    ui->closeEntireTree->setChecked(m_plugin->closeEntireTree());
 
     loadThemes();
 
@@ -46,6 +47,7 @@ VerticalTabsSettings::VerticalTabsSettings(VerticalTabsPlugin *plugin, QWidget *
         m_plugin->setAddChildBehavior(ui->appendChild->isChecked() ? VerticalTabsPlugin::AppendChild : VerticalTabsPlugin::PrependChild);
         m_plugin->setReplaceTabBar(ui->replaceTabBar->isChecked());
         m_plugin->setShowByDefault(ui->showByDefault->isChecked());
+        m_plugin->setCloseEntireTree(ui->closeEntireTree->isChecked());
         m_plugin->setTheme(ui->theme->currentData().toString());
         accept();
     });

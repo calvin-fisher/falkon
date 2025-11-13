@@ -53,6 +53,9 @@ public:
     bool showByDefault() const;
     void setShowByDefault(bool show);
 
+    bool closeEntireTree() const;
+    void setCloseEntireTree(bool close);
+
     enum AddChildBehavior {
         AppendChild,
         PrependChild
@@ -81,6 +84,7 @@ private:
     VerticalTabsSchemeHandler *m_schemeHandler = nullptr;
     ViewType m_viewType = TabListView;
     bool m_replaceTabBar = false;
+    bool m_closeEntireTree = false;
     bool m_showByDefault = false;
     AddChildBehavior m_addChildBehavior = AppendChild;
     QString m_theme;
