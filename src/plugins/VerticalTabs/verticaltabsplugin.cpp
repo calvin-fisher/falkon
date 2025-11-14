@@ -54,6 +54,9 @@ void VerticalTabsPlugin::init(InitState state, const QString &settingsPath)
     m_controller = new VerticalTabsController(this);
     SideBarManager::addSidebar(QSL("VerticalTabs"), m_controller);
 
+    // Apply close-entire-tree behavior to WebTab static setting
+    WebTab::setCloseEntireTree(m_closeEntireTree);
+
     m_schemeHandler = new VerticalTabsSchemeHandler(this);
     mApp->networkManager()->registerExtensionSchemeHandler(QSL("verticaltabs"), m_schemeHandler);
 
@@ -171,6 +174,9 @@ void VerticalTabsPlugin::setCloseEntireTree(bool close)
     }
 
     m_closeEntireTree = close;
+
+    // Propagate to WebTab
+    WebTab::setCloseEntireTree(m_closeEntireTree);
 
     QSettings settings(m_settingsPath, QSettings::IniFormat);
     settings.setValue(QSL("VerticalTabs/CloseEntireTree"), m_closeEntireTree);

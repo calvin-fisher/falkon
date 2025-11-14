@@ -133,6 +133,10 @@ public:
     static AddChildBehavior addChildBehavior();
     static void setAddChildBehavior(AddChildBehavior behavior);
 
+    // Whether closing a tab should also close its entire descendant tree.
+    static bool closeEntireTree();
+    static void setCloseEntireTree(bool close);
+
 private Q_SLOTS:
     void showNotification(QWidget* notif);
     void loadFinished();

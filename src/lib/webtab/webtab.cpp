@@ -644,6 +644,7 @@ void WebTab::tabActivated()
 }
 
 static WebTab::AddChildBehavior s_addChildBehavior = WebTab::AppendChild;
+static bool s_closeEntireTree = false;
 
 // static
 WebTab::AddChildBehavior WebTab::addChildBehavior()
@@ -655,6 +656,18 @@ WebTab::AddChildBehavior WebTab::addChildBehavior()
 void WebTab::setAddChildBehavior(AddChildBehavior behavior)
 {
     s_addChildBehavior = behavior;
+}
+
+// static
+bool WebTab::closeEntireTree()
+{
+    return s_closeEntireTree;
+}
+
+// static
+void WebTab::setCloseEntireTree(bool close)
+{
+    s_closeEntireTree = close;
 }
 
 void WebTab::resizeEvent(QResizeEvent *event)
@@ -671,12 +684,25 @@ void WebTab::removeFromTabTree()
 
     setParentTab(nullptr);
 
-    int i = 0;
-    while (!m_childTabs.isEmpty()) {
-        WebTab *child = m_childTabs.at(0);
-        child->setParentTab(nullptr);
-        if (parentTab) {
-            parentTab->addChildTab(child, parentIndex + i++);
+    // If close-entire-tree behavior is enabled, close all descendant tabs
+    // Otherwise, promote descendant tabs to parent
+    if (WebTab::closeEntireTree()) {
+        // Using a copy because closing tabs mutates m_childTabs
+        QVector<WebTab*> children = m_childTabs;
+        for (WebTab *child : children) {
+            if (child) {
+                child->closeTab();
+            }
+        }
+    }
+    else {
+        int i = 0;
+        while (!m_childTabs.isEmpty()) {
+            WebTab *child = m_childTabs.at(0);
+            child->setParentTab(nullptr);
+            if (parentTab) {
+                parentTab->addChildTab(child, parentIndex + i++);
+            }
         }
     }
 }
